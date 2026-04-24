@@ -1,0 +1,27 @@
+<mat-toolbar color="primary" class="shadow-md relative z-10 bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-4 md:px-8">
+  <div class="flex items-center justify-between w-full max-w-7xl mx-auto">
+    <div class="flex items-center gap-2 cursor-pointer" routerLink="/">
+      <mat-icon>school</mat-icon>
+      <span class="text-lg md:text-xl font-bold tracking-wide">EduManage</span>
+    </div>
+
+    <div class="flex items-center gap-2 md:gap-4">
+      <ng-container *ngIf="authService.isAuthenticated(); else unauth">
+        <a mat-button routerLink="/dashboard" routerLinkActive="bg-white/20" class="rounded-full px-2 md:px-4 transition-all hover:bg-white/10 !min-w-0">
+          <mat-icon class="md:mr-1">dashboard</mat-icon>
+          <span class="hidden md:inline">Dashboard</span>
+        </a>
+        <div class="h-6 w-[1px] bg-white/30 hidden md:block"></div>
+        <button mat-stroked-button (click)="logout()" class="border-white/50 hover:bg-white/10 text-white rounded-full transition-all !min-w-0 !px-3 md:!px-4">
+          <mat-icon class="mr-0 md:mr-1">logout</mat-icon>
+          <span class="hidden md:inline">Logout</span>
+        </button>
+      </ng-container>
+
+      <ng-template #unauth>
+        <a mat-button routerLink="/login" class="text-white hover:bg-white/10 rounded-full transition-all !min-w-0 !px-3 md:!px-4">Login</a>
+        <a mat-raised-button color="accent" routerLink="/signup" class="rounded-full shadow-lg hover:shadow-xl transition-all font-semibold !min-w-0 !px-3 md:!px-4">Sign Up</a>
+      </ng-template>
+    </div>
+  </div>
+</mat-toolbar>

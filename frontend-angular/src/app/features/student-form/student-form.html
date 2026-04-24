@@ -1,0 +1,76 @@
+<div class="min-h-[80vh] flex items-center justify-center p-4">
+  <mat-card class="w-full max-w-lg p-2 !rounded-2xl shadow-2xl border border-gray-100 overflow-hidden relative">
+    <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-teal-500 to-blue-600"></div>
+    
+    <mat-card-header class="mb-4 flex flex-col items-center pt-6">
+      <div class="w-16 h-16 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center mb-4">
+        <mat-icon class="scale-150">{{isEditMode ? 'edit' : 'person_add'}}</mat-icon>
+      </div>
+      <mat-card-title class="!text-3xl font-extrabold text-gray-800">
+        {{isEditMode ? 'Edit Student' : 'Add Student'}}
+      </mat-card-title>
+      <mat-card-subtitle class="!text-gray-500 mt-2">
+        {{isEditMode ? 'Update student information' : 'Enter new student details'}}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Loading spinner only while fetching data -->
+      <div *ngIf="isLoading" class="flex justify-center py-8">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <!-- Form always shows when not loading -->
+      <form *ngIf="!isLoading" [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+        
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Full Name</mat-label>
+          <input matInput formControlName="name" placeholder="Aarav Sharma" />
+          <mat-icon matPrefix class="text-gray-400 mr-2">person</mat-icon>
+          <mat-error *ngIf="studentForm.get('name')?.hasError('required')">Name is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Email Address</mat-label>
+          <input matInput formControlName="email" type="email" placeholder="aarav@example.com" />
+          <mat-icon matPrefix class="text-gray-400 mr-2">email</mat-icon>
+          <mat-error *ngIf="studentForm.get('email')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="studentForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phone" placeholder="9876543210" />
+          <mat-icon matPrefix class="text-gray-400 mr-2">phone</mat-icon>
+          <mat-error *ngIf="studentForm.get('phone')?.hasError('required')">Phone is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Course</mat-label>
+          <input matInput formControlName="course" placeholder="Computer Science" />
+          <mat-icon matPrefix class="text-gray-400 mr-2">school</mat-icon>
+          <mat-error *ngIf="studentForm.get('course')?.hasError('required')">Course is required</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Enrollment Date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="enrollmentDate" placeholder="Choose a date" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-icon matPrefix class="text-gray-400 mr-2">calendar_today</mat-icon>
+          <mat-error *ngIf="studentForm.get('enrollmentDate')?.hasError('required')">Enrollment date is required</mat-error>
+        </mat-form-field>
+
+        <div class="flex gap-4 mt-4">
+          <button mat-flat-button color="primary" type="submit" class="flex-1 !py-6 text-lg !rounded-xl shadow-lg hover:shadow-xl transition-all" [disabled]="studentForm.invalid || isSaving">
+            <mat-spinner *ngIf="isSaving" diameter="24" class="mr-2"></mat-spinner>
+            <span *ngIf="!isSaving">{{isEditMode ? 'Update Student' : 'Add Student'}}</span>
+          </button>
+          <button mat-stroked-button type="button" routerLink="/dashboard" class="!py-6 !rounded-xl">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
